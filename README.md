@@ -150,6 +150,131 @@ int main()
 }
 ```
 ### 程式說明:
+宣告一個大小為24的整數陣列t並初始化為0，用來記錄每個小時內事件發生的次數。
+通過cin從標準輸入讀取一個整數值並存入input變數，表示要計算的事件數量。
+使用for迴圈從0到input-1，依次讀取每個事件的起始時間a和結束時間b。
+在內層的for迴圈中，使用a-1和b-1作為索引，將t陣列中對應的元素加1，表示在這個時間為遊覽車任務時間。
+完成對所有事件的計數後，使用for迴圈遍歷t陣列，找到最大的計數值，並存入input變數。
+最後，使用cout將最大的事件數量輸出到標準輸出，並加上換行符。
+程式結束，返回0表示正常運行結束
+
+## 20. 大整數加法
+### 問題描述 ：
+有時候我們有些很大的值，大到即使大型的計算機也無法幫我們作一些很基本的運算。請你寫一個程式來解決兩個大整數的加法問題。
+### 輸入說明 ：
+第一行有一個正整數 N ，表示共有 N 筆測試資料。接下來有 N 行，每行為一筆測試資料，內含兩個整數，其值不超過 30 位數，兩個整數間有一個空格。
+### 輸出說明 ：
+每筆測試資料輸出兩個整數的和於一行。
+### 範例 ：
+![image](https://user-images.githubusercontent.com/126050259/232324427-741b0585-92e1-4efd-9bb4-c02426c6565b.png)
+
+### 程式:
+```
+#include <iostream>
+#include <cstring>
+
+void rev(char* s, int len) {
+    int i;
+    char temp;
+    for (i = 0; i < len / 2; i++) {
+        temp = s[i];
+        s[i] = s[len - i - 1];
+        s[len - i - 1] = temp;
+    }
+}
+
+int main() {
+    int ncase;
+    std::cin >> ncase;
+    while (ncase--) {
+        char n1[1000], n2[1000];
+        int num1[1000] = { 0 }, num2[1000] = { 0 }, ans[1000] = { 0 }, len1, len2, len3, i;
+        std::cin >> n1;
+        len1 = strlen(n1);
+        std::cin >> n2;
+        len2 = strlen(n2);
+        len3 = (len2 > len1) ? len2 : len1;
+        rev(n1, len1);
+        rev(n2, len2);
+        for (i = 0; i < len1; i++)
+            num1[i] = n1[i] - '0';
+        for (i = 0; i < len2; i++)
+            num2[i] = n2[i] - '0';
+        for (i = 0; i < len3; i++) {
+            ans[i] += num1[i] + num2[i];
+            if (ans[i] / 10) {
+                ans[i + 1] += ans[i] / 10;
+                ans[i] %= 10;
+            }
+        }
+        if (ans[len3])
+            std::cout << ans[len3];
+        for (i = len3 - 1; i >= 0; i--)
+            std::cout << ans[i];
+        std::cout << "\n";
+    }
+    return 0;
+}
+```
+### 程式說明:
+包含iostream和cstring標頭檔，以便使用cin、cout和strlen等輸入輸出和字串處理功能。
+宣告一個整數變數ncase，用來接收輸入。
+cin從標準輸入讀取一個整數值並存入ncase變數，表示要處理的測試案例數量。
+while迴圈，迴圈次數為ncase，用來處理每個測試案例。
+在迴圈內部，宣告兩個字串變數n1和n2，分別用來接收要相加的兩個大數。
+宣告三個整數陣列num1、num2和ans，用來分別儲存n1、n2和相加的結果，並初始化為0。
+cin從標準輸入讀取兩個大數n1和n2。
+strlen函數計算n1和n2的長度，並分別存入len1和len2變數。
+自定義的rev函數，將n1和n2反轉，方便後續相加操作。
+for迴圈，將n1和n2轉換成整數陣列num1和num2，並將每一位的數字字符轉換成對應的數字。
+for迴圈，對num1和num2進行相加操作，結果存入ans陣列。
+在相加過程中，如果相加的結果超過10，則將進位加到下一位。
+for迴圈，從ans陣列的最高位開始輸出相加結果，注意處理前綴零的情況。
+程式結束
+
+## 21. 最大值與最小值
+### 問題描述 ：
+寫一個程式來找出輸入的十個數字的最大值和最小值，數值不限定為整數，且值可存放於 float 型態數值內。
+### 輸入說明 ：
+輸入十個數字，以空白間隔。
+### 輸出說明 ：
+輸出數列中的最大值與最小值，輸出時需附上小數點後兩位數字。
+### 範例 ：
+![image](https://user-images.githubusercontent.com/126050259/232324510-212f6ec7-8588-4bb0-b88c-5f1eddef4f62.png)
+
+### 程式:
+```
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+
+int main() {
+    double a[10], b, c;
+    int x;
+    for (x = 0; x < 10; x++) {
+        cin >> a[x];
+        if (x == 0) {
+            b = a[x];
+            c = a[x];
+        }
+        else {
+            if (a[x] > b) {
+                b = a[x];
+            }
+            if (a[x] < c) {
+                c = a[x];
+            }
+        }
+    }
+    cout << fixed << setprecision(2) << "maximum:" << b << endl;
+    cout << fixed << setprecision(2) << "minimum:" << c << endl;
+    return 0;
+}
+```
+### 程式說明:
+把第一次輸入的數值帶入變數內，當作最大值最小值好做比較
+
 
 
 
@@ -261,6 +386,54 @@ int main()
 }
 ```
 ### 程式說明:
+
+
+
+## 24. 計算複利
+### 問題描述 ：
+Problem Description
+你每個月存 10000 元到銀行中，銀行的每月利率為 0.1% ，以複利計算，請問 3 個月後，你的帳戶為多少錢？
+底下的表格示範了如何得到第 3 個月時，帳戶中的本利和（本金 + 利率總合）。
+![image](https://user-images.githubusercontent.com/126050259/232324696-dcfe7db2-6f61-4e2f-b0cd-af8ece4a74b4.png)
+我們定義底下幾個符號：
+
+r: 每期利率。以前例而言， r = 0.1%
+
+n: 期數。以前例而言， n = 3
+
+p: 每期投入金額。以前例而言 p = 10000
+
+現在，給你前述的三個值（即 r, n 及 p ），請計算期末的本利和。以前例而言，期未的本利合為 30060.04001 元。
+
+Input File Format
+輸入有 3 行。第一行為 r ，為浮點數值。第二行為 n ，為一整數。第三行為 p ，為一整數。
+
+Output Format
+輸出本利和，請將數值以「整數」表示（無條件捨去）
+### 範例:
+![image](https://user-images.githubusercontent.com/126050259/232324722-e49d7031-8631-4ef2-a84e-a580be0e29ea.png)
+### 程式:
+```
+#include<iostream>  
+using namespace std;
+long double r, x;
+long int n, p;
+int main() {
+	cin >> r >> n >> p;
+	x = 0;
+
+	while (n > 0) {
+		x += p;
+		x *= (1 + r);
+		n--;
+	}
+
+	cout << (long long)x << endl;
+	return 0;
+}
+```
+### 程式說明:
+
 
 
 
